@@ -1,38 +1,26 @@
 const input = require('./input');
 
-// Filter out all non-horizontal, non-vertical lines as per the question
-const straightLines = input.filter((position) => {
+function getPoints(position) {
   const [[x1, y1], [x2, y2]] = position;
-  if (x1 === x2) {
-    return true;
+  let xStep = x1 === x2 ? 0 :
+    x1 < x2 ? 1 :
+    -1;
+  let yStep = y1 === y2 ? 0 :
+    y1 < y2 ? 1 :
+    -1
+  let points = [], resultX = x1, resultY = y1;
+  while(resultX !== x2 || resultY !== y2) {
+    points.push([resultX, resultY]);
+    resultX += xStep;
+    resultY += yStep;
   }
-  if (y1 === y2) {
-    return true;
-  }
-  return false;
-});
-
-function getPoints(straightLine) {
-  const [[x1, y1], [x2, y2]] = straightLine;
-  if (x1 === x2) {
-    const length = Math.abs(y2 - y1);
-    const start = Math.min(y1, y2);
-    return new Array(length + 1).fill(null).map((_, index) => {
-      return [x1, start + index];
-    });
-  }
-  if (y1 === y2) {
-    const length = Math.abs(x1 - x2);
-    const start = Math.min(x1, x2);
-    return new Array(length + 1).fill(null).map((_, index) => {
-      return [start + index, y1];
-    });
-  }
+  points.push([x2, y2]); // Add the last point on
+  return points;
 }
 
 let vents = {};
 
-straightLines.forEach((position) => {
+input.forEach((position) => {
   const points = getPoints(position);
   points.forEach((point) => {
     const [x, y] = point;
