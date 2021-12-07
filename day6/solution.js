@@ -1,5 +1,4 @@
 const input = require('./input');
-// const input = [3,4,3,1,2];
 
 // Set up the inital state
 let state = new Array(9).fill(0);
@@ -7,7 +6,7 @@ input.forEach((fish) => {
   state[fish]++;
 });
 
-function dayPasses(doDebug) {
+function dayPasses() {
   let nextState = new Array(9);
   const reproduceCount = state[0];
   for (let age = 1; age <= 8; age++) {
